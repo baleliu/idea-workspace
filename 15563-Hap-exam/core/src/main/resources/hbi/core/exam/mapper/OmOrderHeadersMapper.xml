@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hbi.core.exam.mapper.OmOrderHeadersMapper">
+    <resultMap id="BaseResultMap" type="hbi.core.exam.dto.OmOrderHeaders">
+        <result column="HEADER_ID" property="headerId" jdbcType="DECIMAL"/>
+        <result column="ORDER_NUMBER" property="orderNumber" jdbcType="VARCHAR"/>
+        <result column="COMPANY_ID" property="companyId" jdbcType="DECIMAL"/>
+        <result column="ORDER_DATE" property="orderDate" jdbcType="DATE"/>
+        <result column="ORDER_STATUS" property="orderStatus" jdbcType="VARCHAR"/>
+        <result column="CUSTOMER_ID" property="customerId" jdbcType="DECIMAL"/>
+
+		<!--公司名称-->
+		<result column="COMPANY_NAME" property="companyName"/>
+		<!--客户名称-->
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<!--物料id-->
+		<result column="INVENTORY_ITEM_ID" property="inventoryItemId"/>
+
+    </resultMap>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+			ooh.*,
+			oc.COMPANY_NAME,
+			ac.CUSTOMER_NAME
+		FROM
+			hap_org_companys oc,
+			hap_ar_customers ac,
+			hap_om_order_headers ooh
+
+		WHERE ooh.COMPANY_ID = oc.COMPANY_ID
+			AND ooh.CUSTOMER_ID = ac.CUSTOMER_ID
+		<if test="headerId!=null">
+			AND ooh.HEADER_ID=#{headerId}
+		</if>
+		<if test="companyName!=null">
+			AND oc.COMPANY_NAME=#{companyName}
+		</if>
+		<if test="companyId!=null">
+			AND oc.COMPANY_ID=#{companyId}
+		</if>
+		<if test="customerName!=null">
+			AND ac.CUSTOMER_NAME=#{customerName}
+		</if>
+		<if test="orderNumber!=null">
+			AND ooh.ORDER_NUMBER=#{orderNumber}
+		</if>
+		<if test="orderStatus!=null">
+			AND ooh.ORDER_STATUS=#{orderStatus}
+		</if>
+		<if test="inventoryItemId!=null">
+			AND EXISTS (
+				SELECT 'x' FROM hap_om_order_lines ool
+				WHERE ooh.HEADER_ID=ool.HEADER_ID
+					AND ool.INVENTORY_ITEM_ID=#{inventoryItemId}
+			)
+		</if>
+    </select>
+
+	<update id="updateByNumber">
+
+		UPDATE hap_om_order_headers SET
+			COMPANY_ID=#{companyId},
+			CUSTOMER_ID=#{customerId},
+			ORDER_DATE=#{orderDate}
+		WHERE ORDER_NUMBER=#{orderNumber}
+	</update>
+
+	<update id="updateSubmit">
+
+		UPDATE hap_om_order_headers SET
+			ORDER_STATUS=#{orderStatus}
+		WHERE ORDER_NUMBER=#{orderNumber}
+	</update>
+
+	<delete id="deleteByNumber">
+		DELETE FROM hap_om_order_headers
+		WHERE ORDER_NUMBER=#{orderNumber}
+	</delete>
+</mapper>

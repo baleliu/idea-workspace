@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hbi.core.exam.mapper.PageMapper">
+
+    <select id="getRoleCode" resultType="string">
+        SELECT role_code FROM sys_user su,sys_user_role sur,sys_role_b srb
+        WHERE su.user_id=sur.user_id
+        AND sur.role_id=srb.role_id
+        AND su.user_id=#{userId}
+    </select>
+</mapper>

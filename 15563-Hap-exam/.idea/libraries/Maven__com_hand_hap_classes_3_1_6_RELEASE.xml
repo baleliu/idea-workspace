@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.hand:hap:classes:3.1.6-RELEASE">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/hand/hap/3.1.6-RELEASE/hap-3.1.6-RELEASE-classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/hand/hap/3.1.6-RELEASE/hap-3.1.6-RELEASE-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/hand/hap/3.1.6-RELEASE/hap-3.1.6-RELEASE-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
